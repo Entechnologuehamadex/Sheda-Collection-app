@@ -50,7 +50,13 @@ jobs:
       - name: Stop Jekyll eating the bundle
         run: touch dist/.nojekyll
 
+      # The site is turned on from here rather than by hand, using this
+      # workflow's own token. The one in the terminal cannot reach the Pages
+      # API, and a repository nobody has clicked the setting on for would
+      # otherwise fail at the deploy step with nothing to point at.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
