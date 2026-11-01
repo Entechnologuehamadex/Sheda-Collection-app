@@ -19,6 +19,12 @@ describe("showing an amount", () => {
     expect(formatMoney("1234500")).toBe("1.23");
     expect(formatMoney("250000000000")).toBe("250,000");
     expect(formatMoney("1000000")).toBe("1");
+    // A kobo figure keeps both places. Trimming this to "10,758.6" is what
+    // a formatter built for numbers does, and it is not how money is read.
+    expect(formatMoney("10758600000")).toBe("10,758.60");
+    // Below the places on display, decimals are dropped rather than shown
+    // as a misleading .00.
+    expect(formatMoney("1004000")).toBe("1");
   });
 
   it("survives a figure larger than a JavaScript number can hold exactly", () => {

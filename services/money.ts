@@ -32,9 +32,15 @@ export function formatMoney(atomic: string | bigint, maxFractionDigits = 2): str
   }
 
   const padded = fraction.toString().padStart(STABLECOIN_DECIMALS, "0");
-  const trimmed = padded.slice(0, maxFractionDigits).replace(/0+$/, "");
-  return trimmed
-    ? `${negative ? "-" : ""}${grouped}.${trimmed}`
+  const sliced = padded.slice(0, maxFractionDigits);
+
+  // Trailing zeros decide whether to show decimals at all, but are kept once
+  // decimals are shown: money reads ₦10,758.60, not ₦10,758.6. An amount
+  // smaller than the places on display still drops them rather than
+  // rendering as ₦0.00.
+  const meaningful = sliced.replace(/0+$/, "");
+  return meaningful
+    ? `${negative ? "-" : ""}${grouped}.${sliced}`
     : `${negative ? "-" : ""}${grouped}`;
 }
 
