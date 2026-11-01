@@ -10,7 +10,7 @@ import type { Project } from "@/services/projects";
  * Two rules here come straight out of the risk register, and both are about
  * what a card implies rather than what it says.
  *
- * R26 — the projected return is the builder's estimate. Showing it bare
+ * R26. The projected return is the builder's estimate. Showing it bare
  * makes it look like a platform figure, so it is labelled on the card, not
  * in terms somewhere else.
  *

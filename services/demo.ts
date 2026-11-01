@@ -6,7 +6,7 @@ import type { Holding } from "./vault";
  * The screens are the thing being reviewed, and an empty portfolio shows
  * none of what they do: no income, no vacancy, no unit still under
  * construction. So the demo carries one of each, and says on screen that it
- * is a demo — a reviewer should never have to guess whether a number in
+ * is a demo, because a reviewer should never have to guess whether a number in
  * front of them is real.
  *
  * Every amount here is in atomic units, six decimals, exactly as the

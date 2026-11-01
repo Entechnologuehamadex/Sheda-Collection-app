@@ -17,6 +17,7 @@
     "testTimeout": 20000
   },
   "dependencies": {
+    "@expo/vector-icons": "15.1.1",
     "@near-js/accounts": "^2.2.5",
     "@near-js/crypto": "^2.2.5",
     "@near-js/providers": "^2.2.5",

@@ -1,8 +1,10 @@
-// @ts-nocheck — Test file
+// @ts-nocheck
+//
+// Test file.
 //
 // Money is handled as integer strings and BigInt throughout, never as
 // `Number`. Above 2^53 a JavaScript number stops being exact, and a share
-// count or a property price in atomic units reaches that easily — which is
+// count or a property price in atomic units reaches that easily, which is
 // how an app ends up showing a holder a figure the chain disagrees with.
 import {
   amountForShares,

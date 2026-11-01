@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { COLORS } from "@/constants/theme";
+import { COLORS, TYPE } from "@/constants/theme";
+import { RoleContext, previewBuilder, type Role } from "@/services/role";
 import "../global.css";
 
 // Held open until Inter is in memory, so the first frame is not the system
@@ -23,6 +24,12 @@ export default function RootLayout() {
     "Inter-Bold": require("../assets/fonts/Inter_24pt-Bold.ttf"),
   });
 
+  const [role, setRole] = useState<Role>("buyer");
+  const roleState = useMemo(
+    () => ({ role, setRole, actingAs: role === "builder" ? previewBuilder() : null }),
+    [role]
+  );
+
   useEffect(() => {
     if (fontsLoaded || fontError) SplashScreen.hideAsync();
   }, [fontsLoaded, fontError]);
@@ -33,21 +40,23 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar style="dark" />
-      <Stack
-        screenOptions={{
-          headerStyle: { backgroundColor: COLORS.background },
-          headerTintColor: COLORS.primaryText,
-          headerTitleStyle: { fontFamily: "Inter-SemiBold", fontSize: 16 },
-          headerShadowVisible: false,
-          contentStyle: { backgroundColor: COLORS.background },
-        }}
-      >
-        <Stack.Screen name="index" options={{ title: "Invest" }} />
-        <Stack.Screen name="project/[id]" options={{ title: "Project" }} />
-        <Stack.Screen name="project/[id]/units" options={{ title: "Choose a unit" }} />
-        <Stack.Screen name="holdings" options={{ title: "Your holdings" }} />
-      </Stack>
+      <RoleContext.Provider value={roleState}>
+        <StatusBar style="dark" />
+        <Stack
+          screenOptions={{
+            headerStyle: { backgroundColor: COLORS.background },
+            headerTintColor: COLORS.primaryText,
+            headerTitleStyle: { fontFamily: "Inter-SemiBold", fontSize: TYPE.heading.fontSize },
+            headerShadowVisible: false,
+            contentStyle: { backgroundColor: COLORS.background },
+          }}
+        >
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="project/[id]/index" options={{ title: "Project" }} />
+          <Stack.Screen name="project/[id]/units" options={{ title: "Choose a unit" }} />
+          <Stack.Screen name="person/[id]" options={{ title: "Profile" }} />
+        </Stack>
+      </RoleContext.Provider>
     </SafeAreaProvider>
   );
 }

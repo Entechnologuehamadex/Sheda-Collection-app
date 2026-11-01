@@ -43,9 +43,12 @@ export interface Project {
   id: string;
   name: string;
   builder: string;
+  /** Profile in `people.ts`, so a card can open who is behind the raise. */
+  builderId: string;
   /** Whether the builder's own company may also attest. See R2. */
   builderIsManager: boolean;
   manager: string;
+  managerId: string;
   location: string;
   units: number;
   target: string;
@@ -73,8 +76,10 @@ export const SAMPLE_PROJECTS: Project[] = [
     id: "m120",
     name: "M120 Apartments",
     builder: "Minimalist & Co",
+    builderId: "minimalist",
     builderIsManager: false,
     manager: "Lagos Property Co",
+    managerId: "lagos-property",
     location: "Lekki, Lagos",
     units: 5,
     target: "90000000000000",
@@ -110,8 +115,10 @@ export const SAMPLE_PROJECTS: Project[] = [
     id: "yaba",
     name: "Yaba Student Hostel",
     builder: "Kayode Developments",
+    builderId: "kayode",
     builderIsManager: true,
-    manager: "Kayode Facilities (same group)",
+    manager: "Kayode Facilities",
+    managerId: "kayode-facilities",
     location: "Yaba, Lagos",
     units: 24,
     target: "48000000000000",
@@ -167,7 +174,7 @@ export function unitFundedPct(unit: Unit): number {
  * What opting out would return, if the build stalled now.
  *
  * Cover is a proportion of the whole raise, so a holder recovers that same
- * proportion of what they put in — not all of it. The screens state this in
+ * proportion of what they put in, not all of it. The screens state this in
  * money rather than as a percentage, because 18% is abstract at the moment
  * someone is deciding and ₦45,000 of ₦250,000 is not.
  */

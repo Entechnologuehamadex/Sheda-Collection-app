@@ -4,7 +4,7 @@ import { RPC_ENDPOINTS } from "@/config/near";
  * Reading vaults off the chain.
  *
  * Views only. Nothing here signs, because a wallet does not belong in a
- * read path and this app should be useful before anyone connects one — a
+ * read path and this app should be useful before anyone connects one. A
  * person browsing raises has not decided to invest yet.
  */
 
@@ -51,7 +51,7 @@ let endpointIndex = 0;
  * One JSON-RPC view call, trying each endpoint before giving up.
  *
  * A single unreachable provider should degrade the app's speed, not its
- * function — the rental app learned this the hard way when a deprecated
+ * function. The rental app learned this the hard way when a deprecated
  * endpoint started refusing every request.
  */
 async function rpc<T>(body: unknown, signal?: AbortSignal): Promise<T> {

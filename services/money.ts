@@ -5,7 +5,7 @@ import { STABLECOIN_DECIMALS } from "@/config/near";
  *
  * Every amount the contract deals in is an integer of atomic units, and a
  * share count can be large. Converting those through `Number` loses precision
- * above 2^53 and rounds in ways nobody can predict — which is how an app ends
+ * above 2^53 and rounds in ways nobody can predict, which is how an app ends
  * up showing a holder a figure the chain disagrees with. All of this works on
  * strings and BigInt.
  */
@@ -71,7 +71,7 @@ export function bpsToPercent(bps: number, maxFractionDigits = 2): string {
 
 /**
  * What a stake buys, given a unit's price and how many shares it divides into.
- * Returned as whole shares, rounded down — a part-share is not a thing.
+ * Returned as whole shares, rounded down, because a part-share is not a thing.
  */
 export function sharesForAmount(
   amountAtomic: string,
