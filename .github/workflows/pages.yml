@@ -45,7 +45,7 @@ jobs:
         run: cp dist/index.html dist/404.html
 
       # Without this, Pages runs the output through Jekyll, which silently
-      # drops every directory beginning with an underscore — including
+      # drops every directory beginning with an underscore, including
       # _expo, where the whole bundle lives.
       - name: Stop Jekyll eating the bundle
         run: touch dist/.nojekyll
