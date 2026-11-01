@@ -1,0 +1,66 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Declaring any permissions block zeroes every permission not listed, so the
+# read on contents has to be spelled out alongside the two Pages needs.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Test
+        run: npx jest --watchAll=false
+
+      - name: Export web
+        run: npx expo export --platform web
+
+      # Pages has no rewrite rules, so a deep link like /project/m120 would
+      # 404 before the app ever loads. Serving the same shell as the 404
+      # page hands those URLs to the client router instead.
+      - name: Route deep links through the app
+        run: cp dist/index.html dist/404.html
+
+      # Without this, Pages runs the output through Jekyll, which silently
+      # drops every directory beginning with an underscore — including
+      # _expo, where the whole bundle lives.
+      - name: Stop Jekyll eating the bundle
+        run: touch dist/.nojekyll
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

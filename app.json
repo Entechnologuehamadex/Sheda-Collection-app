@@ -7,11 +7,23 @@
     "scheme": "shedacollections",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
-    "ios": { "supportsTablet": true },
-    "android": { "edgeToEdgeEnabled": true },
-    "web": { "bundler": "metro", "output": "static" },
-    "plugins": ["expo-router"],
-    "experiments": { "typedRoutes": true },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "baseUrl": "/Sheda-Collection-app"
+    },
     "extra": {
       "network": "testnet",
       "marketplaceContract": "market.shedauser.testnet",

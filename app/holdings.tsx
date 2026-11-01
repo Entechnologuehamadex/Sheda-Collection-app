@@ -6,6 +6,7 @@ import { InterBold, InterMedium, InterRegular, InterSemiBold } from "@/component
 import { COLORS, RADIUS } from "@/constants/theme";
 import { bpsToPercent, naira, ownershipBps } from "@/services/money";
 import { custodyState, getHolding, type Holding } from "@/services/vault";
+import { DEMO_HOLDINGS, DEMO_MODE } from "@/services/demo";
 
 /**
  * What you hold, and what is waiting for you.
@@ -20,11 +21,12 @@ const WATCHED_VAULTS: string[] = [];
 
 export default function Holdings() {
   const [accountId] = useState<string | null>(null);
-  const [holdings, setHoldings] = useState<Holding[]>([]);
+  const [holdings, setHoldings] = useState<Holding[]>(DEMO_MODE ? DEMO_HOLDINGS : []);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
+    if (DEMO_MODE) return;
     if (!accountId || WATCHED_VAULTS.length === 0) return;
     setLoading(true);
     setError(null);
@@ -87,6 +89,15 @@ export default function Holdings() {
             }}
           />
         </View>
+
+        {DEMO_MODE ? (
+          <View style={{ backgroundColor: COLORS.cautionLight, borderRadius: 10, padding: 12 }}>
+            <InterMedium style={{ fontSize: 12, color: COLORS.caution, lineHeight: 18 }}>
+              Example holdings. Nothing here is yours and no wallet is connected — these are on
+              screen so the flows can be reviewed before the raise contract ships.
+            </InterMedium>
+          </View>
+        ) : null}
 
         {error ? (
           <View style={{ backgroundColor: COLORS.cautionLight, borderRadius: 10, padding: 12 }}>
